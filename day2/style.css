@@ -35,7 +35,8 @@ nav a {
     color: white;
     text-decoration: none;
     padding: 6px 10px;
-}
+    transition: background-color 0.2s ease;
+} 
 
 nav a:hover {
     background-color: #6f0000;
