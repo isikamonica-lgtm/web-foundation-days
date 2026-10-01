@@ -1,0 +1,155 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: #f4f6f8;
+    color: #222;
+}
+header {
+    background-color: #8e0000;
+    color: white;
+    text-align: center;
+    padding: 24px 16px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header p {
+    margin: 8px 0 16px;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 6px 10px;
+}
+
+nav a:hover {
+    background-color: #6f0000;
+}
+main {
+    max-width: 800px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+}
+
+.features li {
+    background-color: #fffbe6;
+    border-left: 4px solid #0ba184;
+    padding: 16px;
+    border-radius: 6px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font: inherit;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+button {
+    background-color: #0ba184;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #088a70;
+    transform: translateY(-2px);
+}
+footer {
+    text-align: center;
+    color: #777;
+    padding: 16px;
+}
+@media (max-width: 600px) {
+    header {
+        padding: 16px 10px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    main {
+        margin: 16px auto;
+        padding: 0 10px;
+    }
+
+    section {
+        padding: 16px;
+    }
+
+    nav {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+}
+
+
