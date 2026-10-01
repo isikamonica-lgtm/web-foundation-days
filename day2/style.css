@@ -41,17 +41,23 @@ nav a {
 nav a:hover {
     background-color: #6f0000;
 }
+
+nav a:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
 main {
     max-width: 800px;
     margin: 24px auto;
     padding: 0 16px;
 }
 section {
-    background-color: white;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    background-color:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0, 0, 0, 0.08);
 }
 .features {
     display: grid;
@@ -88,6 +94,12 @@ form {
     gap: 12px;
 }
 
+form p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+}
 label {
     font-weight: bold;
 }
