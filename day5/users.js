@@ -1,100 +1,105 @@
-const API_URL = "https://jsonplaceholder.typicode.com/users";
+// API endpoint
+const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 
-const loadButton = document.querySelector("#load-users");
+// Select HTML elements
+const loadBtn = document.querySelector("#load-users");
 const filterInput = document.querySelector("#filter-input");
 const statusText = document.querySelector("#status");
-const usersList = document.querySelector("#users-list");
+const list = document.querySelector("#users-list");
 
-// Store all users retrieved from the API.
-let allUsers = [];
+// Store the users returned by the API
+let users = [];
 
-// Remember whether users have been loaded successfully.
-let usersLoaded = false;
+// Display users on the webpage
+function renderUsers(usersToShow) {
+  list.innerHTML = "";
 
-// Display a list of users on the page.
-function renderUsers(list) {
-  usersList.innerHTML = "";
+  if (usersToShow.length === 0) {
+    const li = document.createElement("li");
 
-  if (list.length === 0) {
-    if (usersLoaded) {
-      statusText.textContent = "No users match your filter.";
-    }
+    li.textContent = users.length
+      ? "No users match your filter."
+      : "No users loaded yet.";
 
+    list.appendChild(li);
     return;
   }
 
-  list.forEach((user) => {
+  usersToShow.forEach((user) => {
     const li = document.createElement("li");
 
-    const name = document.createElement("h2");
+    const name = document.createElement("strong");
     name.textContent = user.name;
 
-    const email = document.createElement("p");
-    email.textContent = `Email: ${user.email}`;
+    const details = document.createElement("p");
 
-    const city = document.createElement("p");
-    city.textContent = `City: ${user.address.city}`;
+    details.textContent =
+      `${user.email} · ${user.address.city} · ${user.company.name}`;
 
-    const company = document.createElement("p");
-    company.textContent = `Company: ${user.company.name}`;
-
-    li.appendChild(name);
-    li.appendChild(email);
-    li.appendChild(city);
-    li.appendChild(company);
-
-    usersList.appendChild(li);
+    li.append(name, details);
+    list.appendChild(li);
   });
 }
 
-// Fetch users from the API.
+// Fetch users from the API
 async function loadUsers() {
   statusText.textContent = "Loading users...";
-  loadButton.disabled = true;
-  usersLoaded = false;
-
-  usersList.innerHTML = "";
+  loadBtn.disabled = true;
 
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(USERS_URL);
 
+    // Check whether the server returned a successful status
     if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
+      throw new Error(
+        `Server responded with status ${response.status}`
+      );
     }
 
-    const users = await response.json();
+    // Convert the JSON response into JavaScript data
+    users = await response.json();
 
-    // Save the users so filtering does not require another request.
-    allUsers = users;
-    usersLoaded = true;
+    // Display the users
+    renderUsers(users);
 
-    // Display all users initially.
-    renderUsers(allUsers);
-
-    statusText.textContent = `Loaded ${allUsers.length} users.`;
+    // Show the success message
+    statusText.textContent = `Loaded ${users.length} users.`;
   } catch (error) {
+    console.error("Could not load users:", error);
+
     statusText.textContent =
       "Could not load users. Please try again.";
-
-    console.error("Error loading users:", error);
   } finally {
-    loadButton.disabled = false;
+    // Re-enable the button whether the request succeeds or fails
+    loadBtn.disabled = false;
   }
 }
 
-// Load users when the button is clicked.
-loadButton.addEventListener("click", loadUsers);
-
-// Filter the stored users whenever the input changes.
-filterInput.addEventListener("input", () => {
+// Filter users by name without making another API request
+function applyFilter() {
   const searchText = filterInput.value.trim().toLowerCase();
 
-  const filteredUsers = allUsers.filter((user) =>
+  const matchingUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchText)
   );
 
-  renderUsers(filteredUsers);
-});
+  renderUsers(matchingUsers);
 
-// Load users automatically when the page opens.
-loadUsers();
+  // Do not replace the status message before users have loaded
+  if (users.length === 0) {
+    return;
+  }
+
+  if (matchingUsers.length === 0) {
+    statusText.textContent = "No users match your filter.";
+  } else {
+    statusText.textContent =
+      `Showing ${matchingUsers.length} of ${users.length} users.`;
+  }
+}
+
+// Listen for the Load Users button click
+loadBtn.addEventListener("click", loadUsers);
+
+// Listen for changes in the filter box
+filterInput.addEventListener("input", applyFilter);
