@@ -13,22 +13,28 @@ CREATE TABLE students (
 CREATE TABLE courses (
     id INTEGER PRIMARY KEY,
     course_name TEXT NOT NULL,
+    
     course_code TEXT NOT NULL UNIQUE
 );
-
-CREATE TABLE enrolments (
-    id INTEGER PRIMARY KEY,
+   CREATE TABLE ELEMENTS(
+   id INTEGER PRIMARY KEY,
     student_id INTEGER NOT NULL,
     course_id INTEGER NOT NULL,
-    grade TEXT,
+
+    grade TEXT CHECK (
+        grade IS NULL OR grade IN ('A', 'B', 'C', 'D', 'E')
+    ),
 
     FOREIGN KEY (student_id)
-        REFERENCES students(id),
+        REFERENCES students(id)
+        ON DELETE CASCADE,
 
     FOREIGN KEY (course_id)
-        REFERENCES courses(id),
+        REFERENCES courses(id)
+        ON DELETE CASCADE,
 
     UNIQUE (student_id, course_id)
+);
 );
 -- Index to speed up searches by course
 CREATE INDEX idx_enrolments_course_id
