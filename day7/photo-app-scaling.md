@@ -3,8 +3,9 @@
 ## 1. Assumptions
 
 - 10,000,000 registered users; 10% active each day.
-- Each active user, per day: uploads 1 photo, views 50 feed pages.
-- Photo = 2 MB, thumbnail = 50 KB. 1 day = about 100,000 seconds. Peak = 5x average.
+- Each active user, per day: uploads 1 photo, views 50 feed packages.
+- Photo = 2 MB, thumbnail = 50 KB. 1 day = 86,400 seconds. Peak traffic = 5x average traffic.
+
 - **Daily active users (DAU)** = 10,000,000 x 10% = **1,000,000**
 
 ## 2. Estimates
@@ -64,6 +65,7 @@ Load Balancer                                |           |
 7. A worker takes the job and reads the original from object storage.
 8. It creates the 50 KB thumbnail, saves it to object storage and updates the DB row (failed jobs are retried).
 9. The CDN serves the thumbnail to followers; a placeholder shows until it is ready.
+   **Failure handling:** If the original photo is saved to object storage but the database write fails, the system retries the database operation. If the upload cannot be completed, a background cleanup job removes orphaned files after a safe waiting period. The system should also retry failed thumbnail jobs.
 
 ## 8. Trade-offs
 
